@@ -1,0 +1,58 @@
+    function Queue(){
+      //属性
+      this.items = []
+      //方法
+      //添加元素
+      Queue.prototype.enqueue = function(element) {
+        return this.items.push(element)
+      }
+      //移除队列的第一项，并返回移除的元素
+      Queue.prototype.dequeue = function() {
+        return this.items.shift()
+      }
+      //front方法返回队列的首项元素，且不对原队列造成影响
+      Queue.prototype.front = function() {
+        return this.items[0]
+      }
+      //查看队列是否为空
+      Queue.prototype.isEmpty = function() {
+        return this.items.length == 0 
+      }
+      //返回队列元素的个数
+      Queue.prototype.size = function() {
+        return this.items.length
+      }
+      //转换成字符串并且输出
+      Queue.prototype.toString = function() {
+        var resultString = '';
+        for(var i of this.items){
+          resultString += i + ' '
+        }
+        return resultString
+      }
+    }
+
+    //击鼓传花
+    function passGame(namelist,num) {
+      var queue = new Queue();
+      //将参与击鼓传花的人放入队列中
+      for(var i = 0;i < namelist.length; i++) {
+        queue.enqueue(namelist[i])
+      }
+      //根据num值决定队列的变化
+      //1.不等于num的人员，重新放到队列的末尾
+      //2.等于num的人员，删除
+      //判断的终止条件是：队列的长度等于1
+      while(queue.size() > 1) {
+        for(var i = 0; i < num - 1;i++){
+          queue.enqueue(queue.dequeue())
+        }
+        //删除当前num对应的那个倒霉蛋
+        queue.dequeue()
+      }
+      console.log(queue.size());
+      var endName = queue.front();
+      return namelist.indexOf(endName)
+    }
+    var a = passGame([1,2],2);
+    console.log(a);
